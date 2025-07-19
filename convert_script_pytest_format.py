@@ -61,3 +61,19 @@ def test_login_invalid_password(driver):
         print("Login successful")
 
     time.sleep(5)
+
+def test_validate_text_content(driver):
+    driver.get(login_url)
+    wait = WebDriverWait(driver, 10)
+
+    user_name = driver.find_element(By.ID, "username")
+    user_name.send_keys("student")
+    user_password = driver.find_element(By.ID, "password")
+    user_password.send_keys("Password123")
+    button_login = driver.find_element(By.ID, "submit")
+    button_login.click()
+
+    wait.until(EC.url_to_be(login_success_url))
+    elements = driver.find_elements(By.XPATH, "//*[contains(text(), 'nory')]")
+    assert not len(elements), "Element with text 'nory' found."
+    time.sleep(5)
